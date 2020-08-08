@@ -1,48 +1,73 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
 
-class Dishdetail extends Component {
+import { Media } from 'reactstrap';
+import { Card, CardImg, CardImgOverlay, CardText, CardBody,
+  CardTitle } from 'reactstrap';
 
-    constructor(props) {
+class Dishdetail  extends Component {
 
-        super(props);
+  constructor(props) {
+      super(props);    
+  }
 
-    }
-    
+     
+     render(){
+      
+      if (this.props.dish != null) {
 
-    render() {
-        const {selectedDish} = this.props
-        return(
-            <React.Fragment>
-            <div className="col-12 col-md-5 m-1">
-            <Card>
-            <CardImg width="100%" object src={selectedDish.image} alt={selectedDish.name}/>
-            <CardBody>
-              <CardTitle>{selectedDish.name}</CardTitle> 
-              <CardText>{selectedDish.description}</CardText>      
-            </CardBody>
-                   
-           </Card>
-           </div>
-           <div className="col-12 col-md-5 m-1">
-               <h1>comments</h1>
-               {selectedDish.comments.map((comment)=>{
-                   var date = new Date(comment.date)
-                   var month = date.toLocaleString('default', {month: 'short'});
-                   var year = date.getFullYear()
-                   var datenum = date.getDate()
-                   return (
-                       <div>
-                           <p>{comment.comment}</p>
-                           <p>--{month},{datenum},{year}</p>
-                        </div>   
-                   )
-               }
-                )}
-           </div>
-           </React.Fragment>
+        
+      const menucoments = this.props.dish.comments.map((comment) => {
+        return (
+          <div key= {comment.id} className="col-12 m-1">
+        <ul class="list-unstyled">
+            <li>{comment.comment}</li>
+            <li>--{comment.author} ,  
+            {new Intl.DateTimeFormat('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: '2-digit'
+                }).format(new Date(comment.date))}
 
+            </li>
+        </ul>    
+              
+            
+          </div>
+
+          
+          
+          
         );
+    });
+  
+
+        return(
+
+          <div className="container">
+            <div className="row">{menucoments}</div>
+            
+          
+          </div>
+        )
+     }
+
+     else {
+      //  block of code to be executed if the condition is false
+      return(
+        <div className="container">
+        <div className="row"></div>
+        
+      
+      </div>
+
+      )
+
     }
-}
-export default Dishdetail;
+    }
+
+    
+  }
+
+
+
+export default Dishdetail ;
