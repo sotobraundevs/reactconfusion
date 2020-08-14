@@ -7,6 +7,7 @@ import { Card, CardImg, CardImgOverlay,
     function RenderMenuItem ({dish, onClick}) {
         return (
             <Card>
+            {/* Las comillas son para cada dishid se pase por parametro */}
             <Link to={`/menu/${dish.id}`} >
                 <CardImg width="100%" src={dish.image} alt={dish.name} />
                 <CardImgOverlay>
