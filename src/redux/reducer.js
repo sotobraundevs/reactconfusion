@@ -9,7 +9,7 @@ export const initialState = {
     promotions: PROMOTIONS,
     leaders: LEADERS
 };
-
+//Esta es una función pura que retorna el estado cuando se necesita
 export const Reducer = (state = initialState, action) => {
     return state;
 };
