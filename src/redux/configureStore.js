@@ -6,7 +6,7 @@ import { Leaders } from './leaders';
 
 export const ConfigureStore = () => {
     const store = createStore(
-        combineReducers({
+        combineReducers({    // Permite combinar todo los store de redux
             dishes: Dishes,
             comments: Comments,
             promotions: Promotions,

@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-
 import Menu from './MenuComponent';
 import Dishdetail from './DishdetailComponent';
 import Home from './HomeComponent';
 import Header from './HeaderComponent';
 import Footer from './FooterComponent';
-
 import Contact from './ContactComponent';
 import About from './AboutComponent';
-
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 
