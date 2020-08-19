@@ -31,8 +31,10 @@ class CommentForm extends Component {
 
 
   handleSubmit(values) {
-    console.log('Current State is: ' + JSON.stringify(values));
-    alert('Current State is: ' + JSON.stringify(values));
+    // console.log('Current State is: ' + JSON.stringify(values));
+    // alert('Current State is: ' + JSON.stringify(values));
+    // se agregar la accion para que se agregue a la lista de commnentarios
+    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     // event.preventDefault();
 }
 
@@ -63,9 +65,9 @@ class CommentForm extends Component {
                             
                             
                             <Row className="form-group">
-                                <Label htmlFor="yourname" md={2}>Your Name</Label>
+                                <Label htmlFor="author" md={2}>Your Name</Label>
                                 <Col md={10}>
-                                    <Control.text model=".yourname" id="yourname" name="yourname"
+                                    <Control.text model=".author" id="author" name="author"
                                         placeholder="Your Name"
                                         className="form-control"
                                         validators={{
@@ -74,7 +76,7 @@ class CommentForm extends Component {
                                          />
                                     <Errors
                                         className="text-danger"
-                                        model=".yourname"
+                                        model=".author"
                                         show="touched"
                                         messages={{
                                             
@@ -131,8 +133,8 @@ function RenderDish({dish}) {
       );
     else return <div></div>;
 }
-
-function RenderComments({comments}) {
+//Se le pasa la accion y el id
+function RenderComments({comments, addComment, dishId}) {
 
 
 
@@ -150,11 +152,9 @@ function RenderComments({comments}) {
             </p>
           </li>
         ))}
-         {/* <Button outline onClick={toggleModal}><span className="fa fa-edit fa-lg"></span> Submit Comment</Button>  */}
-         {/* <Example /> */}
-
-         <CommentForm/>
- 
+       
+            {/* Se el pasa el id y la accion */}
+        <CommentForm dishId={dishId} addComment={addComment} />
     
 
       </ul>   
@@ -165,14 +165,11 @@ function RenderComments({comments}) {
   } else return <div></div>;
   
 }
-//  this.toggleModal = this.toggleModal.bind(this);
 
 
 const  DishDetail = (props) => {
 
   
-
- 
   return (
     <div className="container">
     <div className="row">
@@ -191,7 +188,11 @@ const  DishDetail = (props) => {
             <RenderDish dish={props.dish} />
         </div>
         <div className="col-12 col-md-5 m-1">
-            <RenderComments comments={props.comments} />
+            <RenderComments comments={props.comments} 
+                addComment={props.addComment}  // Se le pasa la accion y el id
+                dishId={props.dish.id}
+
+            />
         </div>
     </div>
     </div>

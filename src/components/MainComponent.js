@@ -9,6 +9,15 @@ import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 
+import { addComment } from '../redux/ActionCreators';
+
+//make the action available for use within the DishdetailComponent 
+const mapDispatchToProps = dispatch => ({
+  
+  addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment))
+
+});
+
 //Se definie aca por que es const y sirve para mapear el estado
 const mapStateToProps = state => {
   return {
@@ -53,8 +62,11 @@ class Main extends Component {
   
       const DishWithId = ({match}) => {
         return(
-            <Dishdetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
-              comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))} />
+            
+          <Dishdetail dish={this.props.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]}
+          comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+          addComment={this.props.addComment} //se agrega la funcion
+        />
         );
       };
   
@@ -78,4 +90,4 @@ class Main extends Component {
   }
 }
 
-export default withRouter(connect(mapStateToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
