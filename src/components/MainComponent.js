@@ -8,10 +8,13 @@ import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
-//se agrega fetchDishes
-import { addComment, fetchDishes } from '../redux/ActionCreators';
+
+
 //Esto lo que va hacer es resetear el estado 
 import { actions } from 'react-redux-form';
+
+//se agrega fetchDishes
+import { addComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
 
 //make the action available for use within the DishdetailComponent 
 const mapDispatchToProps = (dispatch) => ({
@@ -21,7 +24,10 @@ const mapDispatchToProps = (dispatch) => ({
   // se crea esta nueva propiead para hacer dispach del Tunk fetchDishes
   //para dejarlos disponibles en el main component
   fetchDishes: () => { dispatch(fetchDishes())},
-  resetFeedbackForm: () => { dispatch(actions.reset('feedback'))} 
+  resetFeedbackForm: () => { dispatch(actions.reset('feedback'))} , 
+//se agregan los nuevos
+  fetchComments: () => dispatch(fetchComments()),
+  fetchPromos: () => dispatch(fetchPromos())
   
 });
 
@@ -47,6 +53,8 @@ class Main extends Component {
 
   componentDidMount() {
     this.props.fetchDishes();
+    this.props.fetchComments();
+    this.props.fetchPromos();    
   }
   
  
@@ -60,7 +68,11 @@ class Main extends Component {
                 dish={this.props.dishes.dishes.filter((dish) => dish.featured)[0]}
                 dishesLoading={this.props.dishes.isLoading}  //Tambien se pasa este por paramentro
                 dishesErrMess={this.props.dishes.errMess} //Tambien se pasa este por paramentro
-                promotion={this.props.promotions.filter((promo) => promo.featured)[0]}
+                
+                promotion={this.props.promotions.promotions.filter((promo) => promo.featured)[0]}                
+                promoLoading={this.props.promotions.isLoading}
+                promoErrMess={this.props.promotions.errMess}
+                
                 leader={this.props.leaders.filter((leader) => leader.featured)[0]}
             />
         );
@@ -74,7 +86,8 @@ class Main extends Component {
            isLoading={this.props.dishes.isLoading}
             errMess={this.props.dishes.errMess}
 
-          comments={this.props.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+          comments={this.props.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}         
+          commentsErrMess={this.props.comments.errMess}
           addComment={this.props.addComment} //se agrega la funcion
         />
         );
