@@ -38,7 +38,8 @@ class CommentForm extends Component {
     // console.log('Current State is: ' + JSON.stringify(values));
     // alert('Current State is: ' + JSON.stringify(values));
     // se agregar la accion para que se agregue a la lista de commnentarios
-    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+  //  this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+      this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     // event.preventDefault();
 }
 
@@ -138,7 +139,7 @@ function RenderDish({dish}) {
     else return <div></div>;
 }
 //Se le pasa la accion y el id
-function RenderComments({comments, addComment, dishId}) {
+function RenderComments({comments, postComment, dishId}) {
 
 
 
@@ -158,7 +159,9 @@ function RenderComments({comments, addComment, dishId}) {
         ))}
        
             {/* Se el pasa el id y la accion */}
-        <CommentForm dishId={dishId} addComment={addComment} />
+        {/* <CommentForm dishId={dishId} addComment={addComment} /> */}
+
+        <CommentForm dishId={dishId} postComment={postComment} />
     
 
       </ul>   
@@ -215,7 +218,8 @@ const  DishDetail = (props) => {
         </div>
         <div className="col-12 col-md-5 m-1">
             <RenderComments comments={props.comments} 
-                addComment={props.addComment}  // Se le pasa la accion y el id
+             //   addComment={props.addComment}  // Se le pasa la accion y el id
+                  postComment={props.postComment}
                 dishId={props.dish.id}
 
             />

@@ -9,17 +9,20 @@ import About from './AboutComponent';
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
 
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+
 
 //Esto lo que va hacer es resetear el estado 
 import { actions } from 'react-redux-form';
 
 //se agrega fetchDishes
-import { addComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
+import { postComment, addComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
 
 //make the action available for use within the DishdetailComponent 
 const mapDispatchToProps = (dispatch) => ({
   
-  addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+  //addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
+  postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)), 
   
   // se crea esta nueva propiead para hacer dispach del Tunk fetchDishes
   //para dejarlos disponibles en el main component
@@ -88,7 +91,8 @@ class Main extends Component {
 
           comments={this.props.comments.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}         
           commentsErrMess={this.props.comments.errMess}
-          addComment={this.props.addComment} //se agrega la funcion
+          //addComment={this.props.addComment} //se agrega la funcion
+          postComment={this.props.postComment}
         />
         );
       };
@@ -96,6 +100,24 @@ class Main extends Component {
       return (
         <div>
           <Header />
+
+          <TransitionGroup>
+            <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
+              <div>
+              <Switch location={this.props.location}>
+                  <Route path='/home' component={HomePage} />
+                  <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />} />} />
+                  <Route exact path='/menu' component={() => <Menu dishes={this.props.dishes} />} />
+                  <Route path='/menu/:dishId' component={DishWithId} />
+                  <Route exact path='/contactus' component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
+                  <Redirect to="/home" />
+              </Switch>
+              </div>
+            </CSSTransition>
+          </TransitionGroup>
+          
+
+{/* 
           <div>
             <Switch>
                 <Route path='/home' component={HomePage} />
@@ -107,7 +129,7 @@ class Main extends Component {
                 <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
                 <Redirect to="/home" />
             </Switch>
-          </div>
+          </div> */}
           <Footer />
         </div>
     
