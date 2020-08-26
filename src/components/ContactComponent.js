@@ -15,21 +15,32 @@ const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val
                 constructor(props) {
                     super(props);            
                   
-                    this.handleSubmit = this.handleSubmit.bind(this);                  
+                    this.handleSubmit = this.handleSubmit.bind(this);       
+
+                    // this.props.fetchFeedbacks();
+                    // const feedbacks = props.feedbacks.feedbacks.map((feedback) => {
+                    //    alert('Current State is: ' + JSON.stringify(feedback));
+
+                    // }); 
+                          
                 }
                         
             
                 handleSubmit(values) {
-                    console.log('Current State is: ' + JSON.stringify(values));
-                    alert('Current State is: ' + JSON.stringify(values));
-                    this.props.resetFeedbackForm();
+                    // console.log('Current State is: ' + JSON.stringify(values));
+                    // alert('Current State is: ' + JSON.stringify(values));
+                    // this.props.resetFeedbackForm();
+
+                    this.props.postFeedback( values.firstname, values.lastname, values.telnum, values.email, values.agree, values.contactType, values.message , values.id +1 );
+                    this.props.resetFeedBackForm();       
+
 
                     // event.preventDefault();
                 }          
 
 
                 render() {
-                  
+           
                     return(
                         <div className="container">
                             <div className="row row-content">
@@ -191,7 +202,7 @@ const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val
                                 </Col>
                             </Row>
                         </Form>
-                    
+                      
                     
                     </div>
                </div>

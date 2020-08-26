@@ -16,13 +16,17 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { actions } from 'react-redux-form';
 
 //se agrega fetchDishes
-import { postComment, addComment, fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
+import { fetchFeedbacks, postFeedback, postComment, addComment, fetchDishes, fetchComments, fetchPromos, fetchLeaders } from '../redux/ActionCreators';
 
 //make the action available for use within the DishdetailComponent 
 const mapDispatchToProps = (dispatch) => ({
   
   //addComment: (dishId, rating, author, comment) => dispatch(addComment(dishId, rating, author, comment)),
   postComment: (dishId, rating, author, comment) => dispatch(postComment(dishId, rating, author, comment)), 
+
+  postFeedback: (feedbackId, firstname, lastname, telnum, email, agree, contactType,
+    message) => dispatch(postFeedback(feedbackId, firstname, lastname, telnum, email, agree, contactType,
+      message)), 
   
   // se crea esta nueva propiead para hacer dispach del Tunk fetchDishes
   //para dejarlos disponibles en el main component
@@ -30,7 +34,9 @@ const mapDispatchToProps = (dispatch) => ({
   resetFeedbackForm: () => { dispatch(actions.reset('feedback'))} , 
 //se agregan los nuevos
   fetchComments: () => dispatch(fetchComments()),
-  fetchPromos: () => dispatch(fetchPromos())
+  fetchPromos: () => dispatch(fetchPromos()), 
+  fetchLeaders: () => dispatch(fetchLeaders()), 
+  fetchFeedbacks: () => dispatch(fetchFeedbacks())
   
 });
 
@@ -40,7 +46,8 @@ const mapStateToProps = state => {
     dishes: state.dishes,
     comments: state.comments,
     promotions: state.promotions,
-    leaders: state.leaders
+    leaders: state.leaders, 
+    feedbacks: state.feedbacks
   }
 }
 
@@ -57,7 +64,9 @@ class Main extends Component {
   componentDidMount() {
     this.props.fetchDishes();
     this.props.fetchComments();
-    this.props.fetchPromos();    
+    this.props.fetchPromos();   
+    this.props.fetchLeaders(); 
+    this.props.fetchFeedbacks();
   }
   
  
@@ -76,7 +85,9 @@ class Main extends Component {
                 promoLoading={this.props.promotions.isLoading}
                 promoErrMess={this.props.promotions.errMess}
                 
-                leader={this.props.leaders.filter((leader) => leader.featured)[0]}
+                leader={this.props.leaders.leaders.filter((leader) => leader.featured)[0]}
+                leadersLoading={this.props.leaders.isLoading}
+                leadersErrMess={this.props.leaders.errMess}
             />
         );
       }
@@ -109,7 +120,14 @@ class Main extends Component {
                   <Route exact path='/aboutus' component={() => <About leaders={this.props.leaders} />} />} />
                   <Route exact path='/menu' component={() => <Menu dishes={this.props.dishes} />} />
                   <Route path='/menu/:dishId' component={DishWithId} />
-                  <Route exact path='/contactus' component={() => <Contact resetFeedbackForm={this.props.resetFeedbackForm} />} />
+                  <Route exact path='/contactus' component={() => <Contact 
+                                                                        resetFeedbackForm={this.props.resetFeedbackForm} 
+                                                                        postFeedback={this.props.postFeedback}
+                                                                        fetchFeedbacks={this.props.fetchFeedbacks}
+                                                                    //    feedbacks={this.props.feedbacks.feedbacks.filter((feedback) => feedback.agree)[1]}
+                                                                     //   feedbacksErrMess={this.props.feedbacks.errMess}
+
+                                                                        />} />
                   <Redirect to="/home" />
               </Switch>
               </div>
